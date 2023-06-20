@@ -1,0 +1,18 @@
+Глава 3
+
+
+
+
+1 https://otvet.mail.ru/question/198168892		
+2 https://ru.wikipedia.org/wiki/Информационная_система
+3 https://dic.academic.ru/dic.nsf/ogegova/277456
+4 https://www.java.com/ru/
+5 https://spring.io/
+6 https://www.postgresql.org/
+7 https://www.jetbrains.com/idea/
+8 https://jakarta.ee/
+
+
+
+
+Head First. Паттерны проектирования. Обновленное юбилейное издание. — СПб.: Питер, 2018. — 656 с.: ил. — (Серия «Head First O’Reilly») (дата обращения 03.12.2021).

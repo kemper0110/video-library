@@ -1,0 +1,51 @@
+Инструкция по установке и запуску проекта
+
+
+Фронтенд
+
+Скачать и установить react: https://ru.reactjs.org/tutorial/tutorial.html#setup-for-the-tutorial
+
+Находясь в директории "video library/src/main/frontend/video-library/", выполнить команду 
+npm start
+для запуска отладочного сервера фронтенда
+
+
+Postgresql
+Дамп базы данных приложен к исходникам
+
+
+Бэкенд
+
+Открыть проект "video library" в IntelliJ IDEA
+Дождаться загрузки всех необходимых зависимостей
+Выбрать в IDEA конфигурацию VideoLibraryApplication
+Запустить выбранную конфигурацию (shift + F10)
+
+
+Файл конфигурации бэкенда
+
+В файле 
+"video library/src/main/resources/application.yaml"
+
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/video library"
+    username: "postgres"
+    password: "000000"
+    
+заменить на свои параметры подключения к СУБД
+
+
+заменить путь к изображениям
+file:
+  directory: /home/danil/static/image/
+  
+  
+Если сервер запускается не по адресу http://localhost:8080,
+то необходимо изменить адрес обращения к серверу у переменной
+const baseURL = "http://localhost:8080";
+в файле 
+"video library/src/main/frontend/video-library/src/api/api.js"
+
+
+Открыть браузер http://localhost:3000/

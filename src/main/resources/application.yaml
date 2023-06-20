@@ -1,0 +1,49 @@
+server:
+  http2:
+    enabled: true
+  error:
+    include-message: always
+    include-exception: true
+    include-stacktrace: always
+spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 2KB
+      max-file-size: 200MB
+      max-request-size: 215MB
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/video_library"
+    username: "postgres"
+    password: "000000"
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        auto_quote_keyword: true
+
+jwt:
+  access_token_expiration: 1200
+  refresh_token_expiration: 2400
+  access_cookie_name: access_token
+  refresh_cookie_name: refresh_token
+rights:
+  user:
+    ROLE_USER
+    addStatus
+    addComment
+  moderator:
+    ROLE_MODERATOR
+    deleteUsers
+    deleteComment
+    viewUsers
+
+
+file:
+  directory: static/image
+#  directory: /home/danil/static/image/
