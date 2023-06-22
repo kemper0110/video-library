@@ -1,6 +1,7 @@
 package com.vpr33.videolibrary.controller;
 
 
+import com.vpr33.videolibrary.error.VideoNotFound;
 import com.vpr33.videolibrary.repository.VideoRepository;
 import com.vpr33.videolibrary.service.ImageService;
 import com.vpr33.videolibrary.service.VideoService;
@@ -45,7 +46,7 @@ public class ImageController {
 
     @PreAuthorize("isAuthenticated() && hasRole('MODERATOR')")
     @PostMapping
-    public void uploadImage(@RequestParam("file") MultipartFile file, @RequestParam Long video_id) throws IOException {
+    public void uploadImage(@RequestParam("file") MultipartFile file, @RequestParam Long video_id) throws IOException, VideoNotFound {
         final var filename = imageService.storeFile(file);
         videoService.setImagePath(video_id, filename);
     }

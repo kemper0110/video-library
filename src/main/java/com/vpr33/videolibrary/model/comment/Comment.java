@@ -1,4 +1,4 @@
-package com.vpr33.videolibrary.model;
+package com.vpr33.videolibrary.model.comment;
 
 import com.vpr33.videolibrary.model.user.User;
 import com.vpr33.videolibrary.model.video.Video;

@@ -8,7 +8,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.List.of;
 
 @SpringBootTest
 //@RequiredArgsConstructor
@@ -19,6 +22,7 @@ class VideoLibraryApplicationTests {
     private GenreRepository genreRepository;
     @Autowired
     private VideoRepository videoRepository;
+
     @Test
     void contextLoads() {
 //        final var genre = genreRepository.findById(1L).get();
@@ -27,18 +31,20 @@ class VideoLibraryApplicationTests {
 //        ), null, null);
 //        System.out.println(videos.size());
 
-        final var names = List.of(
-                "Драма",
-                "Комедия"
-        );
-        final var types = List.of(
+//        final var genreNames = List.of(
+//                "Драма",
+//                "Комедия"
+//        );
+//        final var types = List.of(
 //                Video.Type.valueOf("movie"),
-                Video.Type.valueOf("clip"),
-                Video.Type.valueOf("season")
-        );
-        final var genres = genreRepository.findAllByNameIn(names);
-        final var videos = service.getFiltered(types, genres, null);
-        videos.size();
+//                Video.Type.valueOf("clip"),
+//                Video.Type.valueOf("season")
+//        );
+        final var genres = List.of(1L, 2L, 3L, 4L);
+        final var videos = videoRepository.findVideosFiltered(
+                List.of(Video.Type.season, Video.Type.movie),
+                genres, 9D);
+        System.out.println(videos.size());
     }
 
 }

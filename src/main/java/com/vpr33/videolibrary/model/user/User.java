@@ -2,8 +2,8 @@ package com.vpr33.videolibrary.model.user;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.vpr33.videolibrary.model.Comment;
-import com.vpr33.videolibrary.model.Status;
+import com.vpr33.videolibrary.model.comment.Comment;
+import com.vpr33.videolibrary.model.status.Status;
 import jakarta.persistence.*;
 import lombok.*;
 

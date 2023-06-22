@@ -3,7 +3,9 @@ package com.vpr33.videolibrary.service;
 
 import com.vpr33.videolibrary.error.StatusNotFound;
 import com.vpr33.videolibrary.error.VideoNotFound;
-import com.vpr33.videolibrary.model.Status;
+import com.vpr33.videolibrary.model.status.PreviewStatus;
+import com.vpr33.videolibrary.model.status.PreviewStatusMapper;
+import com.vpr33.videolibrary.model.status.Status;
 import com.vpr33.videolibrary.model.user.User;
 import com.vpr33.videolibrary.repository.StatusRepository;
 import com.vpr33.videolibrary.repository.VideoRepository;
@@ -12,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 @Service
 @Transactional
@@ -25,21 +28,21 @@ public class StatusService {
     }
 
     public Status getOne(User user, Long video_id) throws VideoNotFound, StatusNotFound {
-        // TODO: check getReference possibility
-        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+//        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+        final var video = videoRepository.getReferenceById(video_id);
         return statusRepository.findByVideoAndUser(video, user).orElseThrow(() -> new StatusNotFound(video_id, user.getId()));
     }
 
     public Status add(User user, Long video_id) throws VideoNotFound {
-        // TODO: check getReference possibility
-        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+//        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+        final var video = videoRepository.getReferenceById(video_id);
         final var status = new Status(video, user);
         return statusRepository.save(status);
     }
 
     public void delete(User user, Long video_id) throws VideoNotFound {
-        // TODO: check getReference possibility
-        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+//        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+        final var video = videoRepository.getReferenceById(video_id);
         statusRepository.removeByVideoAndUser(video, user);
     }
 
@@ -50,8 +53,8 @@ public class StatusService {
     }
 
     public void setState(User user, Long video_id, Status.State state) throws VideoNotFound {
-        // TODO: check getReference possibility
-        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+//        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+        final var video = videoRepository.getReferenceById(video_id);
         final var status = new Status(video, user, 0.0, 0, state);
         statusRepository.save(status);
     }
@@ -69,8 +72,8 @@ public class StatusService {
     }
 
     protected Status getStatus(Long video_id, User user) throws VideoNotFound, StatusNotFound {
-        // TODO: check getReference possibility
-        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+//        final var video = videoRepository.findById(video_id).orElseThrow(() -> new VideoNotFound(video_id));
+        final var video = videoRepository.getReferenceById(video_id);
         return statusRepository.findByVideoAndUser(video, user).orElseThrow(() -> new StatusNotFound(video_id, user.getId()));
     }
 }

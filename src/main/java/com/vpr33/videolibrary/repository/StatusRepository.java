@@ -1,6 +1,6 @@
 package com.vpr33.videolibrary.repository;
 
-import com.vpr33.videolibrary.model.Status;
+import com.vpr33.videolibrary.model.status.Status;
 import com.vpr33.videolibrary.model.user.User;
 import com.vpr33.videolibrary.model.video.Video;
 import org.springframework.data.jpa.repository.JpaRepository;

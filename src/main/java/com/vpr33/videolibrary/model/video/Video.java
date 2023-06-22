@@ -2,7 +2,9 @@ package com.vpr33.videolibrary.model.video;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.vpr33.videolibrary.model.*;
+import com.vpr33.videolibrary.model.comment.Comment;
 import com.vpr33.videolibrary.model.genre.Genre;
+import com.vpr33.videolibrary.model.status.Status;
 import com.vpr33.videolibrary.model.studio.Studio;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -42,7 +44,7 @@ public class Video {
     private String image;
     private Long episodes;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "studio_id")
     private Studio studio;
 

@@ -4,13 +4,11 @@ package com.vpr33.videolibrary.service;
 import com.vpr33.videolibrary.error.VideoNotFound;
 import com.vpr33.videolibrary.model.genre.Genre;
 import com.vpr33.videolibrary.model.video.Video;
-import com.vpr33.videolibrary.repository.GenreRepository;
 import com.vpr33.videolibrary.repository.VideoRepository;
-import jakarta.persistence.criteria.*;
+import jakarta.persistence.criteria.Expression;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +21,40 @@ import java.util.Set;
 @Transactional
 @RequiredArgsConstructor
 public class VideoService {
-
     private final VideoRepository videoRepository;
 
-    public List<Video> getFiltered(List<Video.Type> types, List<Genre> genres, List<Long> ratings) {
+    public List<Video> getFiltered(List<Video.Type> types, List<Long> genres, Double minRating) {
+        return videoRepository.findVideosFiltered(types, genres, minRating);
+    }
+
+    public List<Video> getAll() {
+        return videoRepository.findAll();
+    }
+
+    public Video getOne(Long id) throws VideoNotFound {
+        return videoRepository.findByIdFetchInfo(id).orElseThrow(VideoNotFound::new);
+    }
+
+    public void addOrUpdate(Video video) {
+        log.debug("video genres count: {}", video.getGenres().size());
+        videoRepository.save(video);
+    }
+
+    public void delete(Long id) {
+        videoRepository.deleteById(id);
+    }
+
+    public void setImagePath(Long video_id, String image_path) throws VideoNotFound {
+        final var video = videoRepository.findById(video_id).orElseThrow(VideoNotFound::new);
+        video.setImage(image_path);
+        videoRepository.save(video);
+    }
+
+
+
+    /// legace part
+
+    public List<Video> getFilteredLegacy(List<Video.Type> types, List<Genre> genres, List<Long> ratings) {
         var spec = all();
         if (types != null && !types.isEmpty()) spec = spec.and(filterType(types));
         if (genres != null && !genres.isEmpty()) spec = spec.and(filterGenre(genres));
@@ -50,10 +78,6 @@ public class VideoService {
 
     private Specification<Video> filterGenre(List<Genre> genres) {
         if (genres == null) return null;
-
-        /*
-            ключи только для одного со сложным ключом
-         */
         return (root, query, criteriaBuilder) -> {
             final Expression<Set<Genre>> genres_root = root.get("genres");
             return genres.stream().reduce(criteriaBuilder.disjunction(), (pred, genre) -> criteriaBuilder.or(criteriaBuilder.isMember(genre, genres_root), pred), criteriaBuilder::or);
@@ -68,26 +92,4 @@ public class VideoService {
         return (root, query, criteriaBuilder) -> criteriaBuilder.and();
     }
 
-    public List<Video> getAll() {
-        return videoRepository.findAll();
-    }
-
-    public Video getOne(Long id) throws VideoNotFound {
-        return videoRepository.findById(id).orElseThrow(VideoNotFound::new);
-    }
-
-    public Long addOrUpdate(Video video) {
-        log.info("video genres count: {}", video.getGenres().size());
-        return videoRepository.save(video).getId();
-    }
-
-    public void delete(Long id) {
-        videoRepository.deleteById(id);
-    }
-
-    public void setImagePath(Long video_id, String image_path) {
-        final var video = videoRepository.findById(video_id).orElseThrow();
-        video.setImage(image_path);
-        videoRepository.save(video);
-    }
 }

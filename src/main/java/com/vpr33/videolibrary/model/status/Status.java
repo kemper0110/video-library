@@ -1,4 +1,4 @@
-package com.vpr33.videolibrary.model;
+package com.vpr33.videolibrary.model.status;
 
 
 import com.vpr33.videolibrary.model.user.User;
@@ -30,12 +30,12 @@ public class Status {
         this.state = State.PLANNED;
     }
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "video_id", nullable = false)
     private Video video;
 
     @Id
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 

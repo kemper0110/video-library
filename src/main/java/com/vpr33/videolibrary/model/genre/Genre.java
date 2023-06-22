@@ -23,6 +23,6 @@ public class Genre {
     private String description;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "genres")
     private Set<Video> videos = new HashSet<>();
 }

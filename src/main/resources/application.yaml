@@ -1,4 +1,6 @@
 server:
+  compression:
+    enabled: true
   http2:
     enabled: true
   error:
@@ -26,6 +28,7 @@ spring:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
         auto_quote_keyword: true
+    open-in-view: false
 
 jwt:
   access_token_expiration: 1200

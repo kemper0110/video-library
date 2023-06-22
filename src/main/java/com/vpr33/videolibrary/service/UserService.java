@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public UserInfo findUserInfoByUsername(String username) throws UserNotFound{
+    public UserInfo findUserInfoByUsername(String username) throws UserNotFound {
         final var user = userRepository.getByUsername(username).orElseThrow(() -> new UserNotFound(username));
         return new UserInfo(user.getId(), user.getUsername(), user.getRole());
     }
