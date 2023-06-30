@@ -1,9 +1,7 @@
 import Registration from "../features/auth/Registration.tsx";
 
-const RegistrationPage = () => {
-    return (
-        <Registration/>
-    );
-};
+const RegistrationPage = () => (
+    <Registration/>
+);
 
 export default RegistrationPage;

@@ -17,30 +17,35 @@ const VideoForm = ({
                            studio: ""
                        }
                    }) => {
-    const [genres, setGenres] = useState([]);
+    const [genres, setGenres] = useState([
+        {name: "1", id: 1},
+        {name: "2", id: 2},
+        {name: "3", id: 3},
+        {name: "4", id: 4},
+    ])
     const [studios, setStudios] = useState([]);
     const [form, setForm] = useState(videoform);
     const [genreSelected, setGenreSelected] = useState("");
 
 
     // fetch genres
-    useEffect(() => {
-        GenreService.getAll().then(res => {
-            const genres = res.data;
-            setGenres(genres);
-            setGenreSelected(genres[0].name);
-        });
-    }, []);
+    // useEffect(() => {
+    //     GenreService.getAll().then(res => {
+    //         const genres = res.data;
+    //         setGenres(genres);
+    //         setGenreSelected(genres[0].name);
+    //     });
+    // }, []);
     // fetch studios
-    useEffect(() => {
-        StudioService.getAll().then(res => {
-            const studios = res.data;
-            setStudios(studios);
-            setForm(form => {
-                return {...form, studio: studios[0].name};
-            });
-        });
-    }, []);
+    // useEffect(() => {
+    //     StudioService.getAll().then(res => {
+    //         const studios = res.data;
+    //         setStudios(studios);
+    //         setForm(form => {
+    //             return {...form, studio: studios[0].name};
+    //         });
+    //     });
+    // }, []);
 
     const onFormChange = e => {
         setForm({...form, [e.target.name]: e.target.value});

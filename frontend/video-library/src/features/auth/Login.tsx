@@ -13,11 +13,11 @@ const validateLoginForm = (values: Readonly<LoginForm>) => {
     return validateLoginPassword(values) as LoginFormErrors
 }
 
-export const Login = () => {
+const useLoginMutation = () => {
     const setUser = useUser(state => state.setUser)
     const queryClient = useQueryClient()
     const navigate = useNavigate()
-    const loginMutation = useMutation({
+    return useMutation({
         mutationFn: (form: Readonly<LoginForm>) => signIn(form.login, form.password),
         onSuccess: async (response) => {
             setUser(response.data)
@@ -26,6 +26,11 @@ export const Login = () => {
             navigate('/')
         }
     })
+}
+
+export const Login = () => {
+    const navigate = useNavigate()
+    const loginMutation = useLoginMutation()
     const formik = useFormik({
         initialValues: {
             login: "",

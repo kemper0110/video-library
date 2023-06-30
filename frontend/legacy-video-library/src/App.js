@@ -33,6 +33,7 @@ function App() {
                 <Routes>
                     <Route exact path="/login" element={<Pages.LogIn/>}/>
                     <Route exact path="/registration" element={<Pages.Registration/>}/>
+                    {/*<Route exact path="/video-add" element={<Pages.VideoForm/>}/>*/}
 
                     <Route element={<Outlet.PrivateOutlet/>}>
                         <Route exact path="/" element={<Pages.Video/>}/>

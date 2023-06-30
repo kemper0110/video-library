@@ -3,7 +3,11 @@ package com.vpr33.videolibrary.service;
 
 import com.vpr33.videolibrary.error.VideoNotFound;
 import com.vpr33.videolibrary.model.genre.Genre;
+import com.vpr33.videolibrary.model.video.AddVideoRequest;
+import com.vpr33.videolibrary.model.video.UpdateVideoRequest;
 import com.vpr33.videolibrary.model.video.Video;
+import com.vpr33.videolibrary.repository.GenreRepository;
+import com.vpr33.videolibrary.repository.StudioRepository;
 import com.vpr33.videolibrary.repository.VideoRepository;
 import jakarta.persistence.criteria.Expression;
 import jakarta.transaction.Transactional;
@@ -11,9 +15,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -22,6 +29,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class VideoService {
     private final VideoRepository videoRepository;
+    private final ImageService imageService;
+    private final GenreRepository genreRepository;
+    private final StudioRepository studioRepository;
 
     public List<Video> getFiltered(List<Video.Type> types, List<Long> genres, Double minRating) {
         return videoRepository.findVideosFiltered(types, genres, minRating);
@@ -50,9 +60,30 @@ public class VideoService {
         videoRepository.save(video);
     }
 
+    public Long addVideo(MultipartFile file, AddVideoRequest videoRequest) throws IOException {
+        final String filename = imageService.storeFile(file);
+        final var genres = videoRequest.genres().stream().map(genreRepository::getReferenceById).collect(Collectors.toSet());
+        final var studio = studioRepository.getReferenceById(videoRequest.studio());
+        final var video = new Video(null, videoRequest.type(), videoRequest.name(),
+                videoRequest.description(), videoRequest.rating(), filename,
+                videoRequest.episodes(), studio, genres, null, null, null
+        );
+        return videoRepository.save(video).getId();
+    }
+
+    public Long updateVideo(MultipartFile file, UpdateVideoRequest videoRequest) throws IOException {
+        final String filename = file == null ? videoRequest.image() : imageService.storeFile(file);
+        final var genres = videoRequest.genres().stream().map(genreRepository::getReferenceById).collect(Collectors.toSet());
+        final var studio = studioRepository.getReferenceById(videoRequest.studio());
+        final var video = new Video(videoRequest.id(), videoRequest.type(), videoRequest.name(),
+                videoRequest.description(), videoRequest.rating(), filename,
+                videoRequest.episodes(), studio, genres, null, null, null
+        );
+        return videoRepository.save(video).getId();
+    }
 
 
-    /// legace part
+    /// legacy part
 
     public List<Video> getFilteredLegacy(List<Video.Type> types, List<Genre> genres, List<Long> ratings) {
         var spec = all();

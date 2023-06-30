@@ -1,3 +1,35 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* bad variant imho*/
+/*@layer components {*/
+/*    .headline {*/
+/*        @apply bg-headline_bg border-l-8 border-headline_border*/
+/*        pl-2 pr-2 py-0.5 text-left font-medium text-lg*/
+/*    }*/
+/*}*/
+
+
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+{
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+
+.child-element {
+    opacity: 0;
+    transition: opacity 0.4s ease-in;
+}
+
+/* Стиль элемента при появлении */
+.child-element.appear {
+    opacity: 1;
+}
+.child-element.disappear {
+    opacity: 0;
+}

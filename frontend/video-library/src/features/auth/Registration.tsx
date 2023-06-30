@@ -18,11 +18,13 @@ const validateRegistrationForm = (values: Readonly<RegistrationForm>) => {
     }
     return errors
 }
-const Registration = () => {
-    const setUser = useUser(state => state.setUser)
+
+
+const useRegistrationMutation = () => {
     const queryClient = useQueryClient()
+    const setUser = useUser(state => state.setUser)
     const navigate = useNavigate()
-    const registrationMutation = useMutation({
+    return useMutation({
         mutationFn: (form: Readonly<RegistrationForm>) => signUp(form.login, form.password),
         onSuccess: async (response) => {
             setUser(response.data)
@@ -31,6 +33,11 @@ const Registration = () => {
             navigate('/')
         }
     })
+}
+
+const Registration = () => {
+    const navigate = useNavigate()
+    const registrationMutation = useRegistrationMutation()
     const formik = useFormik({
         initialValues: {
             login: "",

@@ -8,13 +8,17 @@ export default {
         extend: {
             colors: {
                 headline_bg: "#e8ebef",
-                headline_border: "#d8dde4"
+                headline_border: "#d8dde4",
+                table_border: '#ddd',
+                secondary_column: '#9da2a8',
+                link: '#176093'
             },
             gridTemplateColumns: {
                 cardsAndFilter: "auto 20%",
                 cards_filter: "auto 200px",
                 cards: "repeat(auto-fill, minmax(200px, 1fr))",
                 cards2: "repeat(2, minmax(100px, 1fr))",
+                listTables: "min-content auto repeat(3, min-content)"
             },
             gridTemplateRows: {
                 cards: "repeat(auto-fill, 390px)"
