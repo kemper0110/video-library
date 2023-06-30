@@ -1,15 +1,12 @@
 import FilterBlock from "./FilterBlock.tsx";
-import {getAllGenres} from "./filterApi.ts";
-import {useQuery} from "@tanstack/react-query";
 import FilterItem from "./FilterItem.tsx";
+import useGenresQuery from "../../queries/useGenresQuery.tsx";
 
 const GenresFilter = ({values, onChange}: {
     values: Set<number>,
     onChange: (value: number, checked: boolean) => void
 }) => {
-    const {data, isLoading, isError} = useQuery(["genres"], getAllGenres, {
-        keepPreviousData: true
-    })
+    const {data, isLoading, isError} = useGenresQuery()
     if (isLoading)
         return <FilterBlock title='Жанры'/>
     if (isError)

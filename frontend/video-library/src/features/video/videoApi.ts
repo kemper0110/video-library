@@ -1,46 +1,41 @@
 import {api, baseURL} from "../api/api.ts";
 
-export type VideoType = "season" | "movie"
+import {VideoDetailedModel, VideoModel} from "../../models/video.ts";
 
-export type Video = {
-    id: number
-    name: string
-    image: string
-    rating: number
-    type: VideoType
-    episodes: number
-}
-
-export type Studio = {
-    id: number
-    name: string
-    description: string
-}
-export type Genre = {
-    id: number
-    name: string
-    description: string
-}
-export type VideoDetailed = Video & {
-    studio: Studio
-    genres: Genre[]
-    description: string
-}
+import {VideoFormModel} from "../videoForm/form.ts";
 
 export async function getAllVideo(query: string) {
-    const {data} = await api.get<Video[]>("/api/video" + '?' + query)
+    const {data} = await api.get<VideoModel[]>("/api/video" + '?' + query)
     return data
 }
 
 export async function getOneVideo(video_id: number) {
-    const {data} = await api.get<VideoDetailed>("/api/video/" + video_id);
+    const {data} = await api.get<VideoDetailedModel>("/api/video/" + video_id);
     return data
 }
 
+function makeVideoForm(videoForm: VideoFormModel): FormData {
+    const file = videoForm.image
+    if(file instanceof File)
+        videoForm.image = null
 
-// TODO: create video type
-export function addVideo(video: Video) {
-    return api.post("/api/video", video);
+    const form = new FormData()
+    const video = JSON.stringify(videoForm)
+    form.append('video', new Blob([video], {type: 'application/json'}))
+    if (file !== null && typeof file !== 'string')
+        form.append('file', file)
+    console.log(video + ' ' + file)
+    return form
+}
+
+export function addVideo(videoForm: Readonly<VideoFormModel>) {
+    const form = makeVideoForm(videoForm)
+    return api.post("/api/video", form);
+}
+
+export function updateVideo(videoForm: Readonly<VideoFormModel>) {
+    const form = makeVideoForm(videoForm)
+    return api.put("/api/video", form);
 }
 
 export function deleteVideo(video_id: number) {

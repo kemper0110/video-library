@@ -1,12 +1,32 @@
 import FilterBlock from "./FilterBlock.tsx";
-import FilterItem from "./FilterItem.tsx";
 
-const RatingFilter = ({values, onChange}: {values: Set<string>, onChange: (value: string, checked: boolean) => void}) => {
+const RatingItem = ({name, value, set}: {
+    name: string,
+    value: number | null,
+    set: (value: number) => void
+}) => (
+    <li className='pl-1 flex items-center'>
+        <label className='flex items-center gap-2'>
+            {value}+
+            <input type="range"
+                   autoComplete='off'
+                   min={6} max={8} step={1}
+                   onPointerUp={e => set(Number.parseInt(e.currentTarget.value))}
+                   onChange={e => set(Number.parseInt(e.currentTarget.value))}
+                   value={value || 0}
+                   name={name}
+            />
+        </label>
+    </li>
+)
+
+const RatingFilter = ({value, onChange}: {
+    value: number | null,
+    onChange: (value: number) => void
+}) => {
     return (
         <FilterBlock title='Рейтинг'>
-            <FilterItem name='6+' value={values.has('6')} set={(checked) => onChange('6', checked)}/>
-            <FilterItem name='7+' value={values.has('7')} set={(checked) => onChange('7', checked)}/>
-            <FilterItem name='8+' value={values.has('8')} set={(checked) => onChange('8', checked)}/>
+            <RatingItem name='rating' value={value} set={onChange}/>
         </FilterBlock>
     );
 };

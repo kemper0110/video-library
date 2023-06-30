@@ -3,77 +3,67 @@ import {useSearchParams} from "react-router-dom";
 import TypeFilter from "./TypeFilter.tsx";
 import RatingFilter from "./RatingFilter.tsx";
 import GenresFilter from "./GenresFilter.tsx";
+import {VideoTypeModel} from "../../../models/video.ts";
 
 type State = {
-    type: Set<string>
+    type: Set<VideoTypeModel>
     genre: Set<number>
-    rating: Set<string>
+    rating: number | null
 }
-
+//
 // type Actions = {
-//     addType: (type: string) => void
-//     removeType: (type: string) => void
-//     addGenre: (genre: number) => void
-//     removeGenre: (genre: number) => void
-//     addRating: (rating: string) => void
-//     removeRating: (rating: string) => void
+//     setType: (type: VideoTypeModel, checked: boolean) => void
+//     setGenre: (genre: number, checked: boolean) => void
+//     setRating: (rating: number) => void
 // }
 //
-// const useFilterStore = create(
-//     immer<State & Actions>((set) => ({
-//         type: new Set<string>(),
+// const useFilterStore = create<State & Actions>(
+//     set => ({
+//         type: new Set<VideoTypeModel>(),
 //         genre: new Set<number>(),
-//         rating: new Set<string>(),
-//         addType: (type: string) => set(state => {
-//             state.type.add(type)
+//         rating: null,
+//         setGenre: (genre: number, checked: boolean) => set(state => {
+//             state.genre[checked ? "add" : "delete"](genre)
+//             return {...state}
 //         }),
-//         removeType: (type: string) => set(state => {
-//             state.type.delete(type)
+//         setRating: (rating: number) => set(state => {
+//             return {...state, rating: rating}
 //         }),
-//         addGenre: (genre: number) => set(state => {
-//             state.genre.add(genre)
+//         setType: (type: VideoTypeModel, checked: boolean) => set(state => {
+//             state.type[checked ? "add" : "delete"](type)
+//             return ({...state})
 //         }),
-//         removeGenre: (genre: number) => set(state => {
-//             state.genre.delete(genre)
-//         }),
-//         addRating: (rating: string) => set(state => {
-//             state.rating.add(rating)
-//         }),
-//         removeRating: (rating: string) => set(state => {
-//             state.rating.delete(rating)
-//         }),
-//     }))
+//     })
 // )
 
 const filtersFromSearchParams = (params: URLSearchParams) => {
+    const rating = params.get('rating')
     const state: State = {
-        type: new Set(params.getAll("type")),
+        type: new Set<VideoTypeModel>(params.getAll("type") as VideoTypeModel[]),
         genre: new Set(params.getAll("genre").map(Number)),
-        rating: new Set(params.getAll("rating")),
+        rating: rating ? Number.parseInt(rating) : null,
     }
-    console.log("from url", state)
+    // console.log("from url", state)
     return state;
 };
 
 const searchParamsFromFilters = (filters: Readonly<State>) => {
     console.log("state", filters)
     const params = new URLSearchParams();
-    for (const key in filters)
-        { // @ts-ignore
-            for (const element of filters[key])
-                        params.append(key, element);
-        }
-    // params.append("type", filters.type)
-    // params.append("genre", JSON.stringify(filters.genre))
-    // params.append("rating", filters.rating)
-    console.log(params.toString());
+    for (const element of filters.type)
+        params.append("type", element)
+    for (const element of filters.genre)
+        params.append("genre", String(element))
+    if (filters.rating)
+        params.append("rating", String(filters.rating))
+    // console.log(params.toString());
     return params;
 };
 
 type TypeAction = {
     type: "setType"
     checked: boolean
-    value: string
+    value: VideoTypeModel
 }
 type GenreAction = {
     type: "setGenre"
@@ -82,33 +72,24 @@ type GenreAction = {
 }
 type RatingAction = {
     type: "setRating"
-    checked: boolean
-    value: string
+    value: number
 }
 
 type Action = TypeAction | GenreAction | RatingAction
+
 function reducer(state: State, action: Action): State {
     // mutable logic
     switch (action.type) {
         case "setType": {
-            // const newset = new Set(state.type)
-            // newset[action.checked ? "add" : "delete"](action.value)
-            // return {...state, type: newset}
             state.type[action.checked ? "add" : "delete"](action.value)
             return {...state}
         }
         case "setGenre": {
-            // const newset = new Set(state.genre)
-            // newset[action.checked ? "add" : "delete"](action.value)
-            // return {...state, genre: newset}
             state.genre[action.checked ? "add" : "delete"](action.value)
             return {...state}
         }
         case "setRating": {
-            // const newset = new Set(state.rating)
-            // newset[action.checked ? "add" : "delete"](action.value)
-            // return {...state, rating: newset}
-            state.rating[action.checked ? "add" : "delete"](action.value)
+            state.rating = action.value
             return {...state}
         }
     }
@@ -117,31 +98,19 @@ function reducer(state: State, action: Action): State {
 
 const FilterSide = () => {
     const [searchParams, setSearchParams] = useSearchParams();
-    // const stateRef = useMemo(() => filtersFromSearchParams(searchParams), [])
     const [state, dispatch] = useReducer(reducer, searchParams, filtersFromSearchParams)
-    console.log("rendered", state)
     useEffect(() => {
         setSearchParams(searchParamsFromFilters(state));
-        console.log("updated")
-    }, [state])
-    // // const [filters, setFilters] = useState(filtersFromSearchParams(searchParams));
-    // const handleChange = (filterName: string) => {
-    //     return (value: string | number) => {
-    //         const new_filters = {...filters, [filterName]: value};
-    //         console.log(JSON.stringify(new_filters));
-    //         setFilters(new_filters);
-    //         setSearchParams(searchParamsFromFilters(new_filters));
-    //     };
-    // };
+    }, [setSearchParams, state])
     return (
-        <div className='h-[900px] bg-blue-50 hidden lg:block'>
+        <div className='hidden lg:block'>
             <TypeFilter values={state.type}
                         onChange={(value, checked) => {
                             dispatch({type: "setType", checked, value})
                         }}/>
-            <RatingFilter values={state.rating}
-                          onChange={(value, checked) => {
-                              dispatch({type: "setRating", checked, value})
+            <RatingFilter value={state.rating}
+                          onChange={value => {
+                              dispatch({type: "setRating", value})
                           }}/>
             <GenresFilter values={state.genre}
                           onChange={(value, checked) => {

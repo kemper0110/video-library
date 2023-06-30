@@ -4,14 +4,21 @@ package com.vpr33.videolibrary.controller;
 import com.vpr33.videolibrary.error.VideoNotFound;
 import com.vpr33.videolibrary.model.genre.Genre;
 import com.vpr33.videolibrary.model.video.*;
+import com.vpr33.videolibrary.repository.GenreRepository;
+import com.vpr33.videolibrary.repository.StudioRepository;
+import com.vpr33.videolibrary.repository.VideoRepository;
+import com.vpr33.videolibrary.service.ImageService;
 import com.vpr33.videolibrary.service.VideoService;
 import jakarta.servlet.http.PushBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -60,7 +67,7 @@ public class VideoController {
     }
 
     @PreAuthorize("hasRole('MODERATOR')")
-    @PostMapping
+    @PostMapping("/legacy")
     @PutMapping
     void addOrUpdateVideo(@RequestBody Video video) {
         videoService.addOrUpdate(video);
@@ -73,5 +80,16 @@ public class VideoController {
     }
 
 
+    //    @PreAuthorize("hasRole('MODERATOR')")
+    @PostMapping
+    Long addVideo(@RequestPart("file") MultipartFile file,
+                  @RequestPart("video") AddVideoRequest videoRequest) throws IOException {
+        return videoService.addVideo(file, videoRequest);
+    }
 
+    @PutMapping
+    Long updateVideo(@RequestPart(value = "file", required = false) MultipartFile file,
+                     @RequestPart("video") UpdateVideoRequest videoRequest) throws IOException {
+        return videoService.updateVideo(file, videoRequest);
+    }
 }

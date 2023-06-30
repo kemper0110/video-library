@@ -7,6 +7,7 @@ import com.vpr33.videolibrary.model.comment.PreviewCommentMapper;
 import com.vpr33.videolibrary.service.CommentService;
 import com.vpr33.videolibrary.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class CommentsController {
     private final UserService userService;
     private final PreviewCommentMapper previewCommentMapper;
 
-    //    @PreAuthorize("isAuthenticated()") // -> creates problems (services disappear)
+//    @PreAuthorize("isAuthenticated()") // -> creates problems (services disappear)
     @PostMapping
     private PreviewComment addComment(
             Authentication authentication,

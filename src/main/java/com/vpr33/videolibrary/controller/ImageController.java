@@ -50,5 +50,4 @@ public class ImageController {
         final var filename = imageService.storeFile(file);
         videoService.setImagePath(video_id, filename);
     }
-
 }
