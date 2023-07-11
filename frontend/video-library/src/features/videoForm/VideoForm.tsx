@@ -18,8 +18,8 @@ const VideoForm = ({initialForm, onSubmit}: { initialForm: VideoFormModel, onSub
         }
     })
     return (
-        <form className='p-4 flex flex-col gap-3 border' onSubmit={formik.handleSubmit}>
-            <div className='flex gap-3'>
+        <form className='max-w-[1200px] mx-auto p-4 flex flex-col gap-3' onSubmit={formik.handleSubmit}>
+            <div className='flex flex-wrap gap-8'>
                 <Input title='Название' placeholder='Евангелион' name='name'
                        value={formik.values.name} onChange={formik.handleChange} onBlur={formik.handleBlur}
                 />
@@ -27,11 +27,11 @@ const VideoForm = ({initialForm, onSubmit}: { initialForm: VideoFormModel, onSub
                        value={formik.values.rating} onChange={formik.handleChange} onBlur={formik.handleBlur}
                 />
             </div>
-            <div className='flex gap-3'>
+            <div className='flex flex-wrap gap-8'>
                 <StudioSelector value={formik.values.studio}
                                 onChange={formik.handleChange} onBlur={formik.handleBlur}
                 />
-                <div className='flex gap-3'>
+                <div className='flex flex-wrap gap-3'>
                     <TypeSelector value={formik.values.type}
                                   onChange={formik.handleChange} onBlur={formik.handleBlur}
                     />

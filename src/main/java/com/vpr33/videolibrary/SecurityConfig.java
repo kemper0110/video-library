@@ -1,7 +1,6 @@
 package com.vpr33.videolibrary;
 
 
-
 import com.auth0.jwt.algorithms.Algorithm;
 import com.vpr33.videolibrary.auth.AuthFilter;
 import com.vpr33.videolibrary.auth.JWTUtils;
@@ -21,6 +20,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -66,23 +66,22 @@ public class SecurityConfig {
         authFilter.setFilterProcessesUrl("/auth/login");
 
         return httpSecurity
+                .exceptionHandling()
+                    .authenticationEntryPoint(new Http403ForbiddenEntryPoint())
+                .and()
                 .formLogin()
-                .loginProcessingUrl("/auth/login")
-                .successHandler(successHandler())
+                    .loginProcessingUrl("/auth/login")
+                    .successHandler(successHandler())
                 .and()
-                .cors(Customizer.withDefaults())
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeHttpRequests()
-                .anyRequest()
-                .permitAll()
+                    .cors(Customizer.withDefaults())
+                    .csrf(AbstractHttpConfigurer::disable)
+                    .sessionManagement()
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .httpBasic(Customizer.withDefaults())
-                .addFilter(authFilter)
-                .addFilterBefore(new OnceAuthFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
-                .authenticationManager(manager)
+                    .addFilter(authFilter)
+                    .addFilterBefore(new OnceAuthFilter(jwtUtils), UsernamePasswordAuthenticationFilter.class)
+                    .authenticationManager(manager)
                 .build();
     }
 

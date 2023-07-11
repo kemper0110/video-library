@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import useRatingMutation from "./mutations/useRatingMutation.tsx";
 
 export interface RatingCellProps {
@@ -12,7 +12,7 @@ const RatingCell = ({rating, video_id}: RatingCellProps) => {
         show: false
     })
     return (
-        <td className='w-min px-3 py-1 text-center '
+        <td className='hidden md:table-cell w-min px-3 py-1 text-center '
             onMouseEnter={() => setState({...state, show: true})}
             onMouseLeave={() => setState(state =>
                 (!state.active) ? {...state, show: false} : state
@@ -20,11 +20,10 @@ const RatingCell = ({rating, video_id}: RatingCellProps) => {
         >
             {
                 state.show ? (
-                    /* Ключ необходим, чтобы при изменении rating, компонент пересоздался с новым стейтом */
-                    <SetRating key={rating}
+                    <SetRating
                         initRating={rating} video_id={video_id}
-                               onFocus={() => setState({...state, active: true})}
-                               onSubmit={() => setState({...state, show: false, active: false})}
+                        onFocus={() => setState({...state, active: true})}
+                        onSubmit={() => setState({...state, show: false, active: false})}
                     />
                 ) : (
                     <>{rating}</>
@@ -44,6 +43,9 @@ interface SetRatingProps {
 const SetRating = ({initRating, video_id, onSubmit, onFocus}: SetRatingProps) => {
     const ratingMutation = useRatingMutation(video_id)
     const [rating, setRating] = useState<number>(initRating)
+    useEffect(() => {
+        setRating(initRating)
+    }, [initRating])
     const submit = () => {
         onSubmit()
         if (rating !== initRating) {

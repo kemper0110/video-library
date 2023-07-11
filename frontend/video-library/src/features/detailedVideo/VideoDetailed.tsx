@@ -15,11 +15,20 @@ const VideoDetailed = ({video_id}: { video_id: number }) => {
         return <ScreenSpinner/>
     if (isError)
         return <div>Ошибка загрузки видео</div>
+    /*
+        480 shiki vs 640 sm
+
+
+     */
     return (
-        <div className='bg-white px-4 w-[1024px] mx-auto mt-4'>
+        <div className='bg-white px-4 max-w-[1024px] mx-auto pt-4'>
             <h1 className='text-4xl'>{data.name}</h1>
             {/*<div className='grid grid-areas-detailed_wide3 grid-cols-3 gap-6 w-full'>*/}
-            <div className='grid grid-areas-detailed_wide gap-6 w-full mt-5 mb-6'>
+            <div className='gap-6 w-full mt-5 mb-6 grid
+            md:grid-areas-detailed_wide md:grid-cols-detailed_wide
+            mc:grid-areas-detailed_medium mc:grid-cols-detailed_medium
+            grid-areas-detailed_small grid-cols-detailed_small
+            '>
                 <ManageVideo video={data}/>
                 <Info type={data.type} episodes={data.episodes} genres={data.genres}/>
                 <Rating rating={data.rating}/>

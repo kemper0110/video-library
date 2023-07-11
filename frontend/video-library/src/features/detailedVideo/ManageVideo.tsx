@@ -10,7 +10,7 @@ import {Link} from "react-router-dom";
 const ManageVideo = ({video}: { video: VideoDetailedModel }) => {
     const user = useUser(state => state.user)
     return (
-        <div className='grid-in-img bg-white'>
+        <div className='grid-in-img bg-white mx-auto'>
             <div>
                 <img src={getImagePath(video.image)} alt={video.name}/>
             </div>

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import useEpisodesMutation from "./mutations/useEpisodesMutation.tsx";
 
 export interface EpisodeCellProps {
@@ -13,7 +13,7 @@ const EpisodeCell = ({episodes, video_episodes, video_id}: EpisodeCellProps) => 
         show: false
     })
     return (
-        <td className='w-min px-3 py-1 text-center'
+        <td className='hidden md:table-cell w-min px-3 py-1 text-center'
             onMouseEnter={() => setState({...state, show: true})}
             onMouseLeave={() => setState(state =>
                 (!state.active) ? {...state, show: false} : state
@@ -21,14 +21,17 @@ const EpisodeCell = ({episodes, video_episodes, video_id}: EpisodeCellProps) => 
         >
             {
                 state.show ? (
-                    /* Ключ необходим, чтобы при изменении episodes, компонент пересоздался с новым стейтом */
-                    <SetEpisode key={episodes}
+                    <SetEpisode
                         initEpisodes={episodes} video_id={video_id}
-                                onFocus={() => setState({...state, active: true})}
-                                onSubmit={() => setState({...state, show: false, active: false})}
+                        onFocus={() => setState({...state, active: true})}
+                        onSubmit={() => setState({...state, show: false, active: false})}
                     />
                 ) : (
-                    <>{episodes}/{video_episodes}</>
+                    <span className='flex items-center gap-1 justify-center'>
+                        {episodes}
+                        <span className='text-slate-500 text-sm'>/</span>
+                        {video_episodes}
+                    </span>
                 )
             }
         </td>
@@ -43,7 +46,11 @@ interface SetEpisodeProps {
 }
 
 const SetEpisode = ({initEpisodes, video_id, onFocus, onSubmit}: SetEpisodeProps) => {
+    console.log("input rendered", initEpisodes)
     const [episodes, setEpisodes] = useState<number>(initEpisodes)
+    useEffect(() => {
+        setEpisodes(initEpisodes)
+    }, [initEpisodes])
     const episodesMutation = useEpisodesMutation(video_id)
     const submit = () => {
         onSubmit()

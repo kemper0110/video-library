@@ -1,0 +1,66 @@
+    DONE: logout
+    DONE: navbar: logout \ username
+    DONE: video add \ image upload \ request
+    DONE: update video \ compose with video add
+    DONE: moderator \ update video button
+    DONE: show banner instead status while not authorized
+    DONE: main page: bottom overlapping
+    DONE: main page: bg \ filter side
+    DONE: detailed page: type localize(from status) \ if movie - don't show episodes \ close status on choose
+    DONE: detailed page: rating stars
+    DONE: filter side: rating slider
+    DONE: status page: rating/episodes ENTER submit
+    DONE: main page: cards sizing
+    DONE: status page: styling
+    DONE: simplify filter side
+    DONE: videos page: hover mini detailed card
+    DONE: html semantic tags
+    DONE: user invalidation with events
+    DONE: full page: styling
+    DONE: semantic: footer
+    DONE: adaptive footer - one col
+    DONE: detailed page: adaptive grid layout
+    DONE: adaptive header - hamburger
+    DONE: _blank telegram link
+    DONE: adaptive filter side sliding
+
+    Optional:
+        TODO: SSE comment observation
+        TODO: migrate to NextJS
+        TODO: filter side: optimize rating slider
+        TODO: video form: validation \ upload progress \ creation status
+        TODO: all operations progress/status
+    Medium:
+        TODO: skeletons: main page \ detailed page
+        TODO: useSpinDelay
+        TODO: semantic: detailed
+    Important:
+        TODO: main page: pagination or endless swiping
+    Refactoring:
+        TODO: endpoints directories cringe | RESTfull endpoints
+        TODO: REACT cringe: small components
+        TODO: page components simpleness
+    Mobile:
+        TODO: status table for mobile
+
+
+
+    Working Volume
+    - Login/Registration
+    - Video catalog
+    - Video detailed
+    - Status page
+
+
+    Advantages
+    - complex query search
+    - query in url
+    - hover video popup
+    - complex+adaptive detailed video grid
+    - state change
+    - responsive interaction
+    - comments
+    - episodes/rating edit
+    - state dnd
+    - footer links
+    - video update form

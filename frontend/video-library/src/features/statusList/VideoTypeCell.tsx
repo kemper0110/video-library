@@ -7,7 +7,7 @@ interface VideoTypeCellProps {
 
 const VideoTypeCell = ({video_type}: VideoTypeCellProps) => {
     return (
-        <td className='w-min px-3 py-1'>
+        <td className='hidden md:table-cell w-min px-3 py-1'>
             {localizeVideoType(video_type)}
         </td>
     );

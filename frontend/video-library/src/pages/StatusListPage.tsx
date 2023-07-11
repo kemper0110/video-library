@@ -47,7 +47,7 @@ const StatusListPage = () => {
         return <div>Ошибка загрузки списка статусов</div>
     const groupped = groupStatuses(data)
     return (
-        <div className='w-full container mx-auto flex flex-col gap-10'>
+        <div className='px-4 py-5 w-full max-w-[1024px] mx-auto flex flex-col gap-10'>
             <StatusList state='PLANNED' statuses={groupped.PLANNED} statusInfo={getInfo(groupped.PLANNED)}/>
             <StatusList state='WATCHING' statuses={groupped.WATCHING} statusInfo={getInfo(groupped.WATCHING)}/>
             <StatusList state='WATCHED' statuses={groupped.WATCHED} statusInfo={getInfo(groupped.WATCHED)}/>

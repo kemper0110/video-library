@@ -55,11 +55,11 @@ const StatusList = ({state, statusInfo, statuses}: StatusListProps) => {
                 <Headline title={caption} tag='caption' className='text-2xl font-semibold py-1.5 px-3'/>
                 <thead className=''>
                 <tr className='border-b border-table_border'>
-                    <th className='text-center text-secondary_column w-min px-3 py-1.5'>#</th>
+                    <th className='text-center text-secondary_column w-min px-0.5 py-1.5'>#</th>
                     <th className='text-left w-full px-3 py-1.5'>Название</th>
-                    <th className='text-center w-min px-3 py-1.5'>Оценка</th>
-                    <th className='text-center w-min px-3 py-1.5'>Эпизоды</th>
-                    <th className='text-center w-min px-3 py-1.5'>Тип</th>
+                    <th className='hidden md:table-cell text-center w-min px-3 py-1.5'>Оценка</th>
+                    <th className='hidden md:table-cell text-center w-min px-3 py-1.5'>Эпизоды</th>
+                    <th className='hidden md:table-cell text-center w-min px-3 py-1.5'>Тип</th>
                 </tr>
                 </thead>
                 <tbody className=''>

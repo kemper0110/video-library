@@ -12,7 +12,9 @@ const CardContainer = () => {
         return <span>Ошибка выполнения запроса</span>
 
     return (
-        <div className='max-w-full grid grid-cols-cards gap-3'>
+        <main className={'w-full grid grid-cols-cards gap-3 ' +
+            'items-stretch ' +
+            ' content-start justify-between justify-items-center justify-self-center '}>
             {
                 data.map(video => <Card key={video.id} video={video}/>)
             }
@@ -30,7 +32,7 @@ const CardContainer = () => {
             {/*<SkeletonCard/>*/}
             {/*<SkeletonCard/>*/}
             {/*<SkeletonCard/>*/}
-        </div>
+        </main>
     );
 };
 

@@ -6,6 +6,9 @@ export default {
     ],
     theme: {
         extend: {
+            screens: {
+                "mc": '480px'
+            },
             colors: {
                 headline_bg: "#e8ebef",
                 headline_border: "#d8dde4",
@@ -18,10 +21,10 @@ export default {
                 cards_filter: "auto 200px",
                 cards: "repeat(auto-fill, minmax(200px, 1fr))",
                 cards2: "repeat(2, minmax(100px, 1fr))",
-                listTables: "min-content auto repeat(3, min-content)"
-            },
-            gridTemplateRows: {
-                cards: "repeat(auto-fill, 390px)"
+                listTables: "min-content auto repeat(3, min-content)",
+                detailed_wide: "auto 1fr 1fr",
+                detailed_medium: "auto 1fr 1fr",
+                detailed_small: "1fr"
             },
             gridTemplateAreas: {
                 detailed_wide: [
@@ -29,15 +32,18 @@ export default {
                     "img info studio",
                     "img desc desc"
                 ],
-                detailed_wide2: [
-                    "img info info rating rating",
-                    "img info info studio studio",
-                    "img desc desc desc desc"
+                detailed_medium: [
+                    "img info info",
+                    "img rating rating",
+                    "img studio studio",
+                    "desc desc desc"
                 ],
-                detailed_wide3: [
-                    "img info info rating rating rating",
-                    "img info info studio studio studio",
-                    "img desc desc desc desc desc"
+                detailed_small: [
+                    "img",
+                    "info",
+                    "rating",
+                    "studio",
+                    "desc"
                 ]
             }
         },
